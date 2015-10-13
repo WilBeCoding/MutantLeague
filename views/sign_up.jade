@@ -2,9 +2,9 @@ extends layout
 
 block content
   p Welcome to #{title}
-  form(action='/' method='post')
+  form(action='/users/signup' method='post')
     div
-          label Name
+          label Username
     input(type='text' name='sign_in')
     div
           label Password

@@ -35,10 +35,10 @@ html
                     span.sr-only (current)
                 li
                   a(href='#') Matchups
-            form(action='/users' method='post').form-inline.signInForm
+            form(action='/signin' method='post').form-inline.signInForm
               div.form-group
                 label(for='login_name').sr-only Name
-                input#login_name.form-control(type='text', placeholder='Name' name='sign_in')
+                input#login_name.form-control(type='text', placeholder='Name' name='user_name')
               div.form-group
                 label(for='login_password').sr-only Password
                 input#login_password.form-control(type='email', placeholder='Password' name='password')
