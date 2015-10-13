@@ -4,14 +4,13 @@ block content
   p Welcome to #{title}
   form(action='/users/signup' method='post')
     div
-          label Username
-    input(type='text' name='sign_in')
+          label Email
+    input(type='text' name='user_email')
     div
           label Password
-    input(type='text' name='password')
+    input(type='password' name='user_password')
+    div
+          label Verify Password
+    input(type='password' name='user_password_confirmation')
     div
       input(type='submit' value='Submit')
-    div
-
-
-

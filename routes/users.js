@@ -20,11 +20,11 @@ router.get('/dashboard', function(req, res, next) {
 })
 
 router.post('/signin', function(req,res, next) {
-  bcrypt.hash(req.body.password, 8, function(err, hash) {
-    mutantCollection.find({email: req.body.user_name}, function (err, mutant) {
+  bcrypt.hash(req.body.user_password, 8, function(err, hash) {
+    mutantCollection.find({email: req.body.user_email}, function (err, mutant) {
       if(mutant) {
-        if(bcrypt.compareSync(req.body.user_name, mutant[0].password)) {
-          req.session.username = req.body.user_name;
+        if(bcrypt.compareSync(req.body.user_password, mutant[0].user_password)) {
+          req.session.email = req.body.user_email;
           res.redirect('/users/dashboard')
         }
       }
@@ -34,23 +34,31 @@ router.post('/signin', function(req,res, next) {
 })
 
 router.post('/signup', function(req,res,next) {
-  req.session.username = req.body.user_name
-  var userName = req.session.username
+  req.session.email = req.body.user_email
+  var email = req.session.email
   bcrypt.genSalt(10, function(err, salt) {
-    bcrypt.hash(req.body.user_name, salt, function(err, hash) {
-      if(req.body.user_name.length > 0) {
-        res.render('/', {errors: ["Username Already Taken"], title: "Sign Up"})
+    bcrypt.hash(req.body.user_password, salt, function(err, hash) {
+      mutantCollection.find({email: req.body.user_email}, function(err, user) {
+        if(req.body.user_email.length > 0) {
+          res.render('/', {errors: ["Email Already Taken"], title: "Sign Up"})
+        }
+      })
+      if(req.body.user_email.length === 0) {
+        res.render('/', {errors: ["Email can't be blank"], title: "Sign Up", email: req.body.user_email, password: req.body.user_password})
       }
-    })
-    if(req.body.user_name.length === 0) {
-      res.render('/', {errors: ["Username can't be blank"], title: "Sign Up", username: req.body.user_name, password: req.body.password})
-    }
-    else if(req.body.password.length > 0 && req.body.password.length <8) {
-      res.render('/', {errors: ["Your Password Must Be At Least 8 Characters Long"], username: req.body.user_name, password:req.body.password, title: "Sign Up"})
-    } else{
-      mutantCollection.insert({username: req.body.user_name, password: hash, title: "Sign Up"})
-      res.redirect('/')
-    }
+      else if(req.body.user_password !== req.body.user_password_confirmation) {
+        res.render('fail', {errors: ["user_password doesn't match confirmation user_password"], email: req.body.user_email, password: req.body.user_password, title: "Sign Up"})
+      }
+      else if(req.body.user_password.length > 0 && req.body.user_password.length <8) {
+        res.render('/', {errors: ["Your user_password Must Be At Least 8 Characters Long"], email: req.body.user_email, user_password:req.body.user_password, title: "Sign Up"})
+      }
+      else if(req.body.user_password.length === 0 || req.body.user_password_confirmation.length === 0) {
+        res.render('/', {errors: ["Both user_password Fields Must Be Completed"], email: req.body.user_email, password: req.body.user_password,title: "Sign Up"})
+      } else{
+        mutantCollection.insert({email: req.body.user_email, password: hash})
+        res.redirect('/')
+      }
+   })
   })
 })
 

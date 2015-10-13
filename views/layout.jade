@@ -38,10 +38,10 @@ html
             form(action='/signin' method='post').form-inline.signInForm
               div.form-group
                 label(for='login_name').sr-only Name
-                input#login_name.form-control(type='text', placeholder='Name' name='user_name')
+                input#login_name.form-control(type='email', placeholder='Name' name='user_name')
               div.form-group
                 label(for='login_password').sr-only Password
-                input#login_password.form-control(type='email', placeholder='Password' name='password')
+                input#login_password.form-control(type='password', placeholder='Password' name='password')
               button.btn.btn-default.signInButton(type='submit') Sign In
 
               ul.nav.navbar-nav.navbar-right

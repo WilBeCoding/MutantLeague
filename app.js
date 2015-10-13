@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cookieSession({
   name: 'session',
-  keys: ['HASH_KEY1', 'HASH_KEY2', 'HASH_KEY3   ']
+  keys: [process.env.HASH_KEY1, process.env.HASH_KEY2, process.env.HASH_KEY3]
 }))
 app.use(express.static(path.join(__dirname, 'public')));
 
