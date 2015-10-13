@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var db = require('monk')('localhost/mutant-league');
 var mutantCollection = db.get('mutants');
+var cookie = require('cookie');
+var bcrypt = require('bcrypt');
 
 /* GET users listing. */
 
@@ -44,7 +46,7 @@ router.post('/signup', function(req,res,next) {
       res.render('/', {errors: ["Username can't be blank"], title: "Sign Up", username: req.body.user_name, password: req.body.password})
     }
     else if(req.body.password.length > 0 && req.body.password.length <8) {
-      res.render('/', {errors: "Your Password Must Be At Least 8 Characters Long"], username: req.body.user_name, password:req.body.password, title: "Sign Up"})
+      res.render('/', {errors: ["Your Password Must Be At Least 8 Characters Long"], username: req.body.user_name, password:req.body.password, title: "Sign Up"})
     } else{
       mutantCollection.insert({username: req.body.user_name, password: hash, title: "Sign Up"})
       res.redirect('/')
