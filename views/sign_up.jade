@@ -1,7 +1,10 @@
 extends layout
 
 block content
-  p Welcome to #{title}
+  p Registration
+  if errors
+    for message in errors
+      p=message
   form(action='/users/signup' method='post')
     div
           label Email
